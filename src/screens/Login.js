@@ -9,6 +9,7 @@ import axios from 'axios';
 import translate from '../../assets/images/yy.png'
 import  {useForm, Controller} from 'react-hook-form';
 //import { set } from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9. !#$%&*+/?^_{1}~]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/
 
@@ -28,7 +29,7 @@ const Login = ({navigation}) => {
         console.log(email, password);
         const configuration = {
           method: "post",
-          url: "http://192.168.1.12:3000/signin",
+          url: "http://192.168.1.12:4000/SignIn",
           data: {
           email,
           password
@@ -36,10 +37,12 @@ const Login = ({navigation}) => {
         };
 
         axios(configuration)
-        .then((result) => {console.log("user connecté"); 
-          navigation.navigate('Profile')  
+        .then(async(result) => {console.log("user connecté"); 
+        //await AsyncStorage.setItem('authToken', result.data.token);
+        navigation.navigate('Profile')  
         })
-        .catch((error) => {console.log(error.response.data);console.log("user non connecté");})
+        .catch((error) => {console.log(error.response.data);
+          console.log("user non connecté");})
 
   }
 
@@ -68,8 +71,7 @@ const Login = ({navigation}) => {
                
 
         <View style = {{flexDirection:'column', paddingTop: 40 }}
-              onSubmit={() => {onSignInPressed(onSubmit)}}
-         >
+              onSubmit={() => {onSignInPressed(onSubmit)}}>
         
         <View style={{flexDirection:'row'}}>
    
@@ -105,7 +107,7 @@ const Login = ({navigation}) => {
             <Controller
               control={control}
               name="password"
-              rules={{required: 'Password is required', minLength: {value:3 , message: 'Password should be minimum 8 characters'}}}
+              rules={{required: 'Password is required', minLength: {value:6 , message: 'Password should be minimum 6 characters'}}}
               render={ ({field: {value, onChange, onBlur}, fieldState:{error}}) => 
               <>
                   <View style={{flexDirection:"column"}}>
@@ -132,7 +134,7 @@ const Login = ({navigation}) => {
         </View>
       
          <View style = {{ width: "90%" , marginBottom: 5 }}>
-           <TouchableOpacity onPress={() => navigation.navigate('Password')}>
+           <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
             <Text style = {styles.forgotPass}> Forgot Password ?</Text>
            </TouchableOpacity>
          </View>

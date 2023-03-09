@@ -1,14 +1,33 @@
-import React , {useState} from "react"
+
+import React , {useState, useEffect} from "react"
 import { ScrollView,TouchableHighlight, StyleSheet, Text, View,StatusBar,Image,ImageBackground,TouchableOpacity } from "react-native"
-import {Colors} from '../../src/constants'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Buttons from '../components/Buttons'
-//import { Component } from "react/cjs/react.development"
-import UserAvatar from 'react-native-user-avatar';
-
-
+import axios from 'axios';
 
 const Profile = ({navigation}) => {
+
+    const[employee, setUser ]= useState({});
+    const [username, setUsername ]= useState('');
+    const [phone, setPhone]= useState('');
+    const [email, setEmail ]= useState('');
+    const [address, setAdress] = useState('');
+    const [role, setRole]= useState(''); 
+
+     // const [searchParams, setSearchParams] = useSearchParams();
+
+
+    /*------------------------- liaison avec back ------------------------------------ */
+    useEffect(()=>{   
+      
+        axios.get('http://192.168.1.12:4000/view_profile').then((res)=>{
+           // console.log(res)
+            setUser(res.data[0])
+        })
+
+        },[employee])
+     
+
+
     return (
         <View style={{height:1000, backgroundColor: '#fff'}}>
             <StatusBar 
@@ -29,7 +48,7 @@ const Profile = ({navigation}) => {
                         </Image>
 
                         <View style={{flexDirection:'row'}}>                      
-                        <Text style={{fontSize:25, fontWeight:'bold', padding:10, color:'#000',marginLeft: 20}}> Zidi Donia</Text>
+                        <Text style={{fontSize:25, fontWeight:'bold', padding:10, color:'#000',marginLeft: 20}}> {employee.username}</Text>
                         
                         </View>                       
                    
@@ -39,17 +58,17 @@ const Profile = ({navigation}) => {
                                    width:'90%',padding:20, paddingBottom:22,borderRadius:10, shadowOpacity:80,
                                    elevation:15, marginTop:20, marginBottom:20, paddingRight:70
                                    }}>
-                        <Image source={require('../../assets/images/assiette.png')} 
+                        <Image source={require('../../assets/images/telephone.png')} 
                         style={{width:30, height:30, marginRight:10 }}></Image>
-                        <Text style={{fontSize:15, color:'#818181', fontWeight:'blod'}}>Chef</Text>
+                        <Text style={{fontSize:15, color:'#818181', fontWeight:'blod'}}>{employee.phone}</Text>
                     </View>
                     <View style={{alignSelf:'center', flexDirection:'row', justifyContent:'center', backgroundColor:'#fff',
                                    width:'90%',padding:20, paddingBottom:22,borderRadius:10, shadowOpacity:80,
                                    elevation:15, marginTop:20, marginBottom:20
                                    }}>
-                        <Image source={require('../../assets/images/telephone.png')} 
+                        <Image source={require('../../assets/images/earth-globe.png')} 
                         style={{width:25, height:25, marginRight:10  }}></Image>
-                        <Text style={{fontSize:15, color:'#818181', fontWeight:'blod'}}>+001 869745213</Text>
+                        <Text style={{fontSize:15, color:'#818181', fontWeight:'blod'}}> {employee.address}</Text>
                     </View>
                     <View style={{alignSelf:'center', flexDirection:'row', justifyContent:'center', backgroundColor:'#fff',
                                    width:'90%',padding:20, paddingBottom:22,borderRadius:10, shadowOpacity:80,
@@ -57,7 +76,7 @@ const Profile = ({navigation}) => {
                                    }}>
                         <Image source={require('../../assets/images/email.png')} 
                         style={{width:25, height:25, marginRight:10  }}></Image>
-                        <Text style={{fontSize:15, color:'#818181', fontWeight:'blod'}}>Donia.zidi.dz@gmail.com</Text>
+                        <Text style={{fontSize:15, color:'#818181', fontWeight:'blod'}}>{employee.email}</Text>
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate('Login')} style={{alignSelf:'center', flexDirection:'row', justifyContent:'center', backgroundColor:'#fff',
                                    width:'90%',padding:20, paddingBottom:22,borderRadius:10, shadowOpacity:80,
@@ -77,4 +96,5 @@ const Profile = ({navigation}) => {
 
 
 export default Profile
+
 

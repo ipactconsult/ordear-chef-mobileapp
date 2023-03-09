@@ -1,17 +1,27 @@
-import React , {useState} from "react"
+import React , {useState, useEffect} from "react"
 import {TextInput,ScrollView, StyleSheet, Text, View,StatusBar,Image,TouchableOpacity, } from "react-native"
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import axios from 'axios';
 
 const Edit_Porfile  = ({navigation}) => {
 
-    const [avatar, setAvatar ]= useState('');
+    const [password, setPassword ]= useState('');
+    const[employee, setUser ]= useState({});
     const [username, setUsername ]= useState('');
     const [phone, setPhone]= useState('');
     const [email, setEmail ]= useState('');
-    const [adresse, setAdresse ]= useState('');
-    const [image, setImage] = useState(''); 
-    const [address, setAdress] = useState(''); 
+    const [role, setRole] = useState(''); 
+    const [address, setAdress] = useState('');
+    
+    useEffect(()=>{   
+      
+        axios.get('http://192.168.1.12:4000/view_profile').then((res)=>{
+           // console.log(res)
+            setUser(res.data[0])
+        })
+
+        },[employee])
 
 
     return (
@@ -38,55 +48,84 @@ const Edit_Porfile  = ({navigation}) => {
 
                 <View style={{flexDirection:'column', justifyContent:'center', width: '80%', alignSelf:'center', marginTop: 60}}>
                     <Input
-                        placeholder='Zidi Donia'
+                        placeholder= {employee.username}
                         leftIcon={
                             <Icon
                             name='user-o'
                             size={18}
                             color='black'
+                            
                             />
                         }
                         style = {styles.input} 
-                        value={email}
+                        value={username}
+                        onChangeText = {setUsername}
                     />
                      
                      <Input
-                        placeholder='Chef'
+                        placeholder={employee.role}
                         leftIcon={
                             <Icon
                             name='user-o'
                             size={18}
                             color='black'
+                            onChangeText = {setRole}
                             />
                         }
                         style = {styles.input} 
-                        value={email}
+                        value={role}
+                        onChangeText = {setRole}
                     />
                    
                      <Input
-                        placeholder='001 869745213'
+                        placeholder={employee.phone}
                         leftIcon={
                             <Icon
                             name='phone'
                             size={18}
                             color='black'
+                            
                             />
                         }
                         style = {styles.input} 
-                        value={email}
+                        value={phone}
+                        onChangeText = {setPhone}
                     />
                     <Input
-                        placeholder='Canada'
+                        placeholder={employee.address}
                         leftIcon={
                             <Icon
                             name='address-book-o'
                             size={18}
                             color='black'
+                          
                             />
                         }
                         style = {styles.input} 
-                        value={email}
+                        value={address}
+                        onChangeText = {setAdress}
                     />
+
+                  <View style = {{ width: "90%" , marginBottom: 5 }}>
+                    
+                        <Text style = {styles.forgotPass}> You need to change your password !</Text>
+                  
+                  </View>
+                  <Input
+                        
+                        leftIcon={
+                            <Icon
+                            name='lock'
+                            size={18}
+                            color='black'
+                            
+                            />
+                        }
+                        style = {styles.input} 
+                        value={password}
+                        onChangeText = {setPassword}
+                    />
+
 
 
                 </View>    
