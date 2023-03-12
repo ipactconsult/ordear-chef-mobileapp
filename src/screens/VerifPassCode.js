@@ -1,9 +1,6 @@
 import React , {useState} from "react"
 import { TextInput, ScrollView, StyleSheet, Text, View,StatusBar,Image,TouchableOpacity } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
-//import Buttons from '../Components/Buttons'
-//import { Component } from "react/cjs/react.development"
-import UserAvatar from 'react-native-user-avatar';
 import axios from 'axios';
 
 const VerifPassCode = ({navigation}) => {
@@ -11,15 +8,10 @@ const VerifPassCode = ({navigation}) => {
 
     /*------------------------- liaison avec back ------------------------------------ */
     const handleSubmit = (e) => {
-        // prevent the form from refreshing the whole page
         e.preventDefault();
-        // make a popup alert showing the "submitted" text
-        //Alert.alert("Submited");
-        
-
         const configuration = {
         method: "post",
-        url: "http://192.168.1.12:4000/codePass",
+        url: "http://192.168.1.102:4000/codePass",
         data: {
             activationCodeForgotPass,
         },
@@ -31,8 +23,6 @@ const VerifPassCode = ({navigation}) => {
         .catch((error) => {console.log("Code not verified !"); }) 
     }
     /*------------------------------------------------------------------------------*/
-    
-
     return (
         
         <View style={{height:700, backgroundColor: '#FF1717' }}>

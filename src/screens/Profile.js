@@ -12,22 +12,28 @@ const Profile = ({navigation}) => {
     const [email, setEmail ]= useState('');
     const [address, setAdress] = useState('');
     const [role, setRole]= useState(''); 
-
-     // const [searchParams, setSearchParams] = useSearchParams();
-
-
     /*------------------------- liaison avec back ------------------------------------ */
     useEffect(()=>{   
       
-        axios.get('http://192.168.1.12:4000/view_profile').then((res)=>{
-           // console.log(res)
+        axios.get('http://192.168.1.102:4000/view_profile').then((res)=>{
             setUser(res.data[0])
         })
 
         },[employee])
-     
 
+     /*------------------------- log Out ------------------------------------ */
+     const handleSubmit = (e) => {
+        e.preventDefault();
+        const configuration = {
+        method: "post",
+        url: "http://192.168.1.102:4000/logout",
+        };
 
+        axios(configuration)
+        .then((result) => {console.log("Logged Out");           
+          navigation.navigate('Login')})
+        .catch((error) => {console.log("Erreur"); }) 
+    }
     return (
         <View style={{height:1000, backgroundColor: '#fff'}}>
             <StatusBar 
@@ -35,7 +41,7 @@ const Profile = ({navigation}) => {
                 hidden= {false}
                 backgroundColor ="#fff" 
              />
-            
+                   <ScrollView  onSubmit={(e) => {handleSubmit(onSubmit)(e)}}>
                     <View style={{padding:10, width:'100%', backgroundColor: '#fff', height:150}}>
                     <TouchableOpacity onPress={() => navigation.navigate('Edit_Profile')} style={{paddingTop:-60}}>
                     <Icon name='pencil' size={30} color="#000" style={{width:30, height:30,marginLeft:350}} />
@@ -78,7 +84,7 @@ const Profile = ({navigation}) => {
                         style={{width:25, height:25, marginRight:10  }}></Image>
                         <Text style={{fontSize:15, color:'#818181', fontWeight:'blod'}}>{employee.email}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')} style={{alignSelf:'center', flexDirection:'row', justifyContent:'center', backgroundColor:'#fff',
+                    <TouchableOpacity onPress={(e) => handleSubmit(e)} style={{alignSelf:'center', flexDirection:'row', justifyContent:'center', backgroundColor:'#fff',
                                    width:'90%',padding:20, paddingBottom:22,borderRadius:10, shadowOpacity:80,
                                    elevation:15, marginTop:20, marginBottom:20,backgroundColor:'#D90A0A'
                                    }}>
@@ -89,12 +95,10 @@ const Profile = ({navigation}) => {
                     </View> 
                     
 
-           
+                    </ScrollView>
         </View>
     )
 }
-
-
 export default Profile
 
 

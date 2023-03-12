@@ -1,35 +1,24 @@
 import Icon from 'react-native-vector-icons/FontAwesome';
-//import { Input } from 'react-native-elements';
-import { MaterialCommunityIcons, Alert, View,Text,Image, StyleSheet ,Button, StatusBar, TouchableOpacity, ScrollView} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import google from '../../assets/images/google.png'
-import fb from '../../assets/images/fb.png'
+import { View,Text,Image, StyleSheet ,TextInput,Button, StatusBar, TouchableOpacity, ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import axios from 'axios';
-import translate from '../../assets/images/yy.png'
 import  {useForm, Controller} from 'react-hook-form';
-//import { set } from 'react-native-reanimated';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const EMAIL_REGEX = /^[a-zA-Z0-9. !#$%&*+/?^_{1}~]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/
+
+const EMAIL_REGEX = /^[a-zA-Z0-9. !#$%&*+/?^_{1}~]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/ 
 
 const Login = ({navigation}) => {
- 
+
   var email = '';
   var password='';
-
   
   const {control, handleSubmit,getValues, formState: {errors}} = useForm();
     console.log(errors);
-
- 
- const onSignInPressed = (email, password) => {
-  
- // console
+   const onSignInPressed = (email, password) => {
         console.log(email, password);
         const configuration = {
           method: "post",
-          url: "http://192.168.1.12:4000/SignIn",
+          url: "http://192.168.1.102:4000/SignIn",
           data: {
           email,
           password
@@ -38,13 +27,11 @@ const Login = ({navigation}) => {
 
         axios(configuration)
         .then(async(result) => {console.log("user connecté"); 
-        //await AsyncStorage.setItem('authToken', result.data.token);
-        navigation.navigate('Profile')  
-        })
+             navigation.navigate('Profile')  
+        }) 
         .catch((error) => {console.log(error.response.data);
           console.log("user non connecté");})
-
-  }
+   }
 
   return(
     <View style = {styles.container}> 
@@ -53,8 +40,6 @@ const Login = ({navigation}) => {
          hidden= {false}
          backgroundColor ="#fff" 
        />
-
-       {/* login form Section*/}
       <View style = {styles.loginContainer}>        
 
       <View style={{padding:-50, width:'100%', backgroundColor: '#fff', height:150,}}>
@@ -66,14 +51,8 @@ const Login = ({navigation}) => {
                       <Text style={{fontSize:25,color:'#000', top:'180%', alignSelf:'center',fontWeight: 'bold'}} >Let's Sign You In</Text>
                     </View>   
             </View>
-
-
-               
-
-        <View style = {{flexDirection:'column', paddingTop: 40 }}
-              onSubmit={() => {onSignInPressed(onSubmit)}}>
-        
-        <View style={{flexDirection:'row'}}>
+        <View style = {{flexDirection:'column', paddingTop: 40 }}>
+           <View style={{flexDirection:'row'}}>
    
             <Controller
               control={control}
@@ -89,7 +68,6 @@ const Login = ({navigation}) => {
                         style = {[styles.input]} 
                         placeholder= "Email"
                         placeholderTextColor="#818181"
-                        //name={email}
                         value={value}
                         onChangeText = {onChange}
                         onBlur={onBlur}
@@ -119,7 +97,6 @@ const Login = ({navigation}) => {
                         style = {[styles.input]} 
                         placeholder= "Password"
                         placeholderTextColor="#818181"
-                        //name={email}
                         value={value}
                         onChangeText = {onChange}
                         onBlur={onBlur}
@@ -132,29 +109,22 @@ const Login = ({navigation}) => {
               
             />             
         </View>
-      
-         <View style = {{ width: "90%" , marginBottom: 5 }}>
-           <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
-            <Text style = {styles.forgotPass}> Forgot Password ?</Text>
-           </TouchableOpacity>
-         </View>
-      
-         <TouchableOpacity style={styles.press}
-          //disabled = {email?  false : true}
-          onPress={ handleSubmit(onSignInPressed(email = getValues("email"), password=getValues("password")))
-           } >
-            <Text style={styles.pressTxt} >
-              SignIn</Text>
-         </TouchableOpacity>
-
+                <View style = {{ width: "90%" , marginBottom: 5 }}>
+                  <TouchableOpacity onPress={() => navigation.navigate('ForgotPasswordScreen')}>
+                    <Text style = {styles.forgotPass}> Forgot Password ?</Text>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.press}
+                  onPress={ handleSubmit(onSignInPressed(email = getValues("email"), password=getValues("password")))
+                  } >
+                    <Text style={styles.pressTxt} >
+                      SignIn</Text>
+                </TouchableOpacity>
         </View>
-
       </View>
   </View>
   )
-
 }
-
 Login.navigationOptions = () => {
   return {
     headerShown: null,    

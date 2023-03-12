@@ -13,17 +13,35 @@ const Edit_Porfile  = ({navigation}) => {
     const [email, setEmail ]= useState('');
     const [role, setRole] = useState(''); 
     const [address, setAdress] = useState('');
-    
+     /*------------------------- liaison avec back GET DATA ------------------------------------ */
     useEffect(()=>{   
       
-        axios.get('http://192.168.1.12:4000/view_profile').then((res)=>{
-           // console.log(res)
+        axios.get('http://192.168.1.102:4000/view_profile').then((res)=>{
             setUser(res.data[0])
         })
-
         },[employee])
 
+         /*------------------------- liaison avec back UPDATE ------------------------------------ */
 
+         const handleSubmit = (e) => {
+            e.preventDefault();
+            const configuration = {
+            method: "put",
+            url: "http://192.168.1.102:4000/edit_profile",
+            data: {
+               username,
+               role,
+               phone,
+               address,
+            },
+            };
+          
+            axios(configuration)
+            .then((result) => {console.log("Data changed");           
+              navigation.navigate('Profile')})
+            .catch((error) => {console.log("Data has not changed"); }) 
+            
+          }
     return (
 
         <View>
@@ -38,7 +56,7 @@ const Edit_Porfile  = ({navigation}) => {
                         <Image source={require('../../assets/images/chef2.png')} 
                             style={{width:150, height:150, borderRadius:100, marginTop:30 }} >
                         </Image> 
-                        <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={{paddingTop:-60}}>
+                        <TouchableOpacity onPress={(e) => handleSubmit(e)} style={{paddingTop:-60}}>
                         <Image source={require('../../assets/images/confirmation.png')}style={{width:30, height:30,marginLeft:320}}></Image>
                    </TouchableOpacity>  
 
@@ -107,26 +125,11 @@ const Edit_Porfile  = ({navigation}) => {
                     />
 
                   <View style = {{ width: "90%" , marginBottom: 5 }}>
-                    
-                        <Text style = {styles.forgotPass}> You need to change your password !</Text>
-                  
+                        <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')}>
+                           <Text style = {styles.forgotPass}> You need to change your password !</Text>
+                       </TouchableOpacity>
                   </View>
-                  <Input
-                        
-                        leftIcon={
-                            <Icon
-                            name='lock'
-                            size={18}
-                            color='black'
-                            
-                            />
-                        }
-                        style = {styles.input} 
-                        value={password}
-                        onChangeText = {setPassword}
-                    />
-
-
+                  
 
                 </View>    
            

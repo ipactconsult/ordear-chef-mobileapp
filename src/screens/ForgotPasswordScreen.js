@@ -1,9 +1,6 @@
 import React , {useState} from "react"
 import { TextInput, ScrollView, StyleSheet, Text, View,StatusBar,Image,TouchableOpacity } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
-//import Buttons from '../Components/Buttons'
-//import { Component } from "react/cjs/react.development"
-import UserAvatar from 'react-native-user-avatar';
 import axios from 'axios';
 
 const ForgotPasswordScreen = ({navigation}) => {
@@ -11,15 +8,10 @@ const ForgotPasswordScreen = ({navigation}) => {
 
     /*------------------------- liaison avec back ------------------------------------ */
     const handleSubmit = (e) => {
-        // prevent the form from refreshing the whole page
         e.preventDefault();
-        // make a popup alert showing the "submitted" text
-        //Alert.alert("Submited");
-        
-
         const configuration = {
         method: "put",
-        url: "http://192.168.1.12:4000/forgotPass",
+        url: "http://192.168.1.102:4000/forgotPass",
         data: {
            email,
         },
@@ -30,9 +22,7 @@ const ForgotPasswordScreen = ({navigation}) => {
           navigation.navigate('VerifPassCode')})
         .catch((err) => {console.log("Email not sent !"); }) 
     }
-    /*------------------------------------------------------------------------------*/
     
-
     return (
         
         <View style={{height:700, backgroundColor: '#FF1717' }}>

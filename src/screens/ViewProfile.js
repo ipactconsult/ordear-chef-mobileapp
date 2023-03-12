@@ -1,10 +1,6 @@
 import React , {useState, useEffect} from "react"
 import { ScrollView,TouchableHighlight, StyleSheet, Text, View,StatusBar,Image,ImageBackground,TouchableOpacity } from "react-native"
-import Icon from 'react-native-vector-icons/FontAwesome'
 import { useRoute } from "@react-navigation/native";
-
-
-
 
 const ViewProfile = ({navigation}) => {
 
@@ -16,7 +12,6 @@ const ViewProfile = ({navigation}) => {
     const [email, setEmail ]= useState('');
     const [address, setAddress ]= useState('');
     const [role, setRole ]= useState(''); 
-     
 
     return (
         <View>

@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { Input } from 'react-native-elements';
 import { ScrollView, View,Text,Image, StyleSheet ,Button, StatusBar, TouchableOpacity, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import image from '../../assets/images/reset.png'
-import  {useForm, Controller} from 'react-hook-form';
 import axios from 'axios';
 
 const ResetPasswordScreen = ({navigation}) => {
@@ -12,15 +9,10 @@ const ResetPasswordScreen = ({navigation}) => {
 
   /*------------------------- liaison avec back ------------------------------------ */
  const handleSubmit = (e) => {
-  // prevent the form from refreshing the whole page
   e.preventDefault();
-  // make a popup alert showing the "submitted" text
-  //Alert.alert("Submited");
-  
-  
   const configuration = {
   method: "put",
-  url: "http://192.168.1.12:4000/resetPass",
+  url: "http://192.168.1.102:4000/resetPass",
   data: {
      password,
   },
@@ -61,7 +53,7 @@ const ResetPasswordScreen = ({navigation}) => {
                 
           <Text style = {styles.txt}> Enter your new password</Text>
           <View style = {styles.formContainer}>
-            <Icon name='envelope-o' size={22} color="#818181"/>
+            <Icon name='lock' size={22} color="#818181"/>
             <TextInput 
              secureTextEntry
               autoCapitalize='none'

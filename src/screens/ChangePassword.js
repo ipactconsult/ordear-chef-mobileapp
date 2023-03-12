@@ -1,27 +1,19 @@
 import React, { useState } from "react";
-import { Input } from 'react-native-elements';
 import { ScrollView, View,Text,Image, StyleSheet ,Button, StatusBar, TouchableOpacity, TextInput} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import image from '../../assets/images/reset.png'
-import  {useForm, Controller} from 'react-hook-form';
 import axios from 'axios';
 
 const ChangePassword = ({navigation}) => {
 
   const [password, setPassword]= useState('');
-  const [Confirmpassword, setConfirmPassword]= useState('');
+  [Confirmpassword, setConfirmPassword]= useState('');
 
   /*------------------------- liaison avec back ------------------------------------ */
  const handleSubmit = (e) => {
-  // prevent the form from refreshing the whole page
   e.preventDefault();
-  // make a popup alert showing the "submitted" text
-  //Alert.alert("Submited");
-  
-  
   const configuration = {
   method: "put",
-  url: "http://192.168.1.12:4000/changePass",
+  url: "http://192.168.1.102:4000/changePass",
   data: {
      password,
   },
@@ -29,24 +21,21 @@ const ChangePassword = ({navigation}) => {
 
   axios(configuration)
   .then((result) => {console.log("Password changed");           
-    navigation.navigate('Edit_Profile')})
+    navigation.navigate('Login')})
   .catch((error) => {console.log("Password has not changed"); }) 
   
 }
-/*------------------------------------------------------------------------------*/
-
-
   return (
         
-    <View style={{height:700, backgroundColor: '#FF1717' }}>
+    <View style={{height:700, backgroundColor: '#fff' }}>
         <StatusBar 
-            barStyle="light-content"
+            barStyle="dark-content"
             hidden= {false}
-            backgroundColor ="#FF1717" 
+            backgroundColor ="#fff" 
          />
 
         <ScrollView  onSubmit={(e) => {handleSubmit(onSubmit)(e)}}>
-            <View style={{padding:10, width:'100%', backgroundColor: '#FF1717', height:250, /*borderBottomRightRadius: 40, borderBottomLeftRadius: 40*/}}>
+            <View style={{padding:10, width:'100%', backgroundColor: '#fff', height:250, /*borderBottomRightRadius: 40, borderBottomLeftRadius: 40*/}}>
                        
             </View>
 
@@ -61,39 +50,35 @@ const ChangePassword = ({navigation}) => {
           <View style = {{flexDirection: 'column', marginTop: 80}}>
                 
           <Text style = {styles.txt}> Enter your new password</Text>
+            <View style = {styles.formContainer}>
+                <Icon name='lock' size={22} color="#818181"/>
+                <TextInput 
+                secureTextEntry
+                  autoCapitalize='none'
+                  style = {styles.input} 
+                  placeholder= "New Password"
+                  placeholderTextColor="#818181"
+                  name={password}
+                  value={password}
+                  onChangeText = {setPassword}
+                />
+          </View>   
           <View style = {styles.formContainer}>
-            <Icon name='lock' size={22} color="#818181"/>
-            <TextInput 
-             secureTextEntry
-              autoCapitalize='none'
-              style = {styles.input} 
-              placeholder= "New Password"
-              placeholderTextColor="#818181"
-              name={password}
-              value={password}
-              onChangeText = {setPassword}
-            />
-         </View>                    
-        </View>
-        <View style = {{flexDirection: 'column', marginTop: 80}}>
-                
-          <Text style = {styles.txt}> Enter your new password</Text>
-          <View style = {styles.formContainer}>
-            <Icon name='lock' size={22} color="#818181"/>
-            <TextInput 
-             secureTextEntry
-              autoCapitalize='none'
-              style = {styles.input} 
-              placeholder= "Confirm Password"
-              placeholderTextColor="#818181"
-              name={Confirmpassword}
-              value={Confirmpassword}
-              onChangeText = {setConfirmPassword}
-            />
-         </View>                    
+                <Icon name='lock' size={22} color="#818181"/>
+                  <TextInput 
+                  secureTextEntry
+                    autoCapitalize='none'
+                    style = {styles.input} 
+                    placeholder= "Confirm Password"
+                    placeholderTextColor="#818181"
+                    name={Confirmpassword}
+                    value={Confirmpassword}
+                    onChangeText = {setConfirmPassword}
+                  />
+            </View>                  
         </View>
 
-            <TouchableOpacity style={styles.send} onPress={(e) => handleSubmit(e)}  >
+            <TouchableOpacity style={styles.send} onPress={(e) => handleSubmit(e)} disabled ={password? false:true}  >
                 <Text style={styles.sendTxt} >Send</Text>
             </TouchableOpacity>
              

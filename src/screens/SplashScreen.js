@@ -1,10 +1,8 @@
 import React from "react"
 import { StyleSheet, Text, View, StatusBar, Image } from "react-native"
-import Colors from '../constants/Colors'
 import ordear from '../../assets/images/ordear.png'
 
 const SplashScreen = ({navigation}) => {
-
     setTimeout(() => {
      navigation.navigate('Login')
     },2000)
