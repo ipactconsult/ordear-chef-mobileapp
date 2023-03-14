@@ -6,5 +6,4 @@ export {default as Edit_Profile} from './Edit_Profile';
 export {default as ForgotPasswordScreen} from './ForgotPasswordScreen';
 export {default as VerifPassCode} from './VerifPassCode';
 export {default as ResetPasswordScreen} from './ResetPasswordScreen';
-export {default as ViewProfile} from './ViewProfile';
 export {default as ChangePassword} from './ChangePassword';

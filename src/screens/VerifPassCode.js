@@ -2,25 +2,52 @@ import React , {useState} from "react"
 import { TextInput, ScrollView, StyleSheet, Text, View,StatusBar,Image,TouchableOpacity } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios';
+import ip_path from '../constants/Path'
+const LENGTH = 4;
 
 const VerifPassCode = ({navigation}) => {
-  const [activationCodeForgotPass, setActivationCodeForgotPass]= useState('');
 
+  const [activationCodeForgotPass, setActivationCodeForgotPass]= useState('');
+  const [isEmpty, setIsEmpty] = useState(true);
+  const [isCode, setConfirmCode] = useState(true);
+  const [showErrors, setShowErrors] = useState(false);
+  /*------------------------- Input Control ------------------------------------ */
+  const handleChange = (value) => {
+    setActivationCodeForgotPass(value);
+    setIsEmpty(value.trim().length === 0);
+    setShowErrors(false);
+    if (value.length === LENGTH) {
+      setConfirmCode(true);
+    } 
+     else {
+      setConfirmCode(false);
+    }
+  };
     /*------------------------- liaison avec back ------------------------------------ */
     const handleSubmit = (e) => {
         e.preventDefault();
-        const configuration = {
-        method: "post",
-        url: "http://192.168.1.102:4000/codePass",
-        data: {
-            activationCodeForgotPass,
-        },
-        };
-
-        axios(configuration)
-        .then((result) => {console.log("Code verified");           
-          navigation.navigate('ResetPasswordScreen')})
-        .catch((error) => {console.log("Code not verified !"); }) 
+        setShowErrors(!isCode ||isEmpty );
+        if (!isCode) {
+          //alert('Please fill in the input field!');
+        }
+       if (isEmpty) {
+          //alert('Please fill in the input field!');
+        }
+        else{
+          const configuration = {
+            method: "POST",
+            url: ip.ip_path+"/codePass",
+            data: {
+                activationCodeForgotPass,
+            },
+            };
+    
+            axios(configuration)
+            .then((result) => {console.log("Code verified");           
+              navigation.navigate('ResetPasswordScreen')})
+            .catch((error) => {console.log("Code not verified !"); }) 
+        }
+        
     }
     /*------------------------------------------------------------------------------*/
     return (
@@ -51,18 +78,21 @@ const VerifPassCode = ({navigation}) => {
               <View style = {styles.formContainer}>
                 <Icon name='check-circle-o' size={22} color="#818181"/>
                 <TextInput 
+                  maxLength={4}
                   autoCapitalize='none'
                   style = {styles.input} 
                   placeholder= "Enter the code"
                   placeholderTextColor="#818181"
                   name={activationCodeForgotPass}
                   value={activationCodeForgotPass}
-                  onChangeText = {setActivationCodeForgotPass}
+                  onChangeText = {handleChange}
                 />
-          </View>                    
+          </View>  
+          {showErrors && isEmpty && <Text style={{ color: 'red' }}>Code cannot be empty</Text>}  
+          {!isCode && <Text style={{ color: 'red' }}>Code value must be  4 characters</Text>}              
         </View>
 
-                <TouchableOpacity style={styles.send} onPress={(e) => handleSubmit(e)}  >
+                <TouchableOpacity style={styles.send} onPress={(e) => handleSubmit(e)}>
                     <Text style={styles.sendTxt} >Send</Text>
                 </TouchableOpacity>
                     

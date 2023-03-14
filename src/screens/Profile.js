@@ -3,7 +3,7 @@ import React , {useState, useEffect} from "react"
 import { ScrollView,TouchableHighlight, StyleSheet, Text, View,StatusBar,Image,ImageBackground,TouchableOpacity } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios';
-
+import ip_path from '../constants/Path'
 const Profile = ({navigation}) => {
 
     const[employee, setUser ]= useState({});
@@ -15,7 +15,7 @@ const Profile = ({navigation}) => {
     /*------------------------- liaison avec back ------------------------------------ */
     useEffect(()=>{   
       
-        axios.get('http://192.168.1.102:4000/view_profile').then((res)=>{
+        axios.get('http://192.168.1.14:8000/employees/view_profile').then((res)=>{
             setUser(res.data[0])
         })
 
@@ -25,8 +25,8 @@ const Profile = ({navigation}) => {
      const handleSubmit = (e) => {
         e.preventDefault();
         const configuration = {
-        method: "post",
-        url: "http://192.168.1.102:4000/logout",
+        method: "POST",
+        url: ip.ip_path+"/logout",
         };
 
         axios(configuration)

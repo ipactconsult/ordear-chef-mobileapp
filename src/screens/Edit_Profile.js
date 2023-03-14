@@ -3,6 +3,7 @@ import {TextInput,ScrollView, StyleSheet, Text, View,StatusBar,Image,TouchableOp
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios';
+import ip_path from '../constants/Path'
 
 const Edit_Porfile  = ({navigation}) => {
 
@@ -16,34 +17,27 @@ const Edit_Porfile  = ({navigation}) => {
      /*------------------------- liaison avec back GET DATA ------------------------------------ */
     useEffect(()=>{   
       
-        axios.get('http://192.168.1.102:4000/view_profile').then((res)=>{
+        axios.get('http://192.168.1.14:8000/employees/view_profile').then((res)=>{
             setUser(res.data[0])
         })
         },[employee])
-
-         /*------------------------- liaison avec back UPDATE ------------------------------------ */
-
+  /*------------------------- liaison avec back UPDATE ------------------------------------ */
          const handleSubmit = (e) => {
             e.preventDefault();
             const configuration = {
-            method: "put",
-            url: "http://192.168.1.102:4000/edit_profile",
+            method: "PUT",
+            url: ip.ip_path+"/edit_profile",
             data: {
-               username,
-               role,
-               phone,
-               address,
+               phone: phone || employee.phone,
+               address:address || employee.address,
             },
             };
-          
             axios(configuration)
             .then((result) => {console.log("Data changed");           
               navigation.navigate('Profile')})
             .catch((error) => {console.log("Data has not changed"); }) 
-            
           }
     return (
-
         <View>
             <StatusBar 
                 barStyle="dark-content"
@@ -61,40 +55,8 @@ const Edit_Porfile  = ({navigation}) => {
                    </TouchableOpacity>  
 
                 </View>
-
-                {/* ----------------- Inputs -------------------------------------- */}
-
+      {/* ----------------- Inputs -------------------------------------- */}
                 <View style={{flexDirection:'column', justifyContent:'center', width: '80%', alignSelf:'center', marginTop: 60}}>
-                    <Input
-                        placeholder= {employee.username}
-                        leftIcon={
-                            <Icon
-                            name='user-o'
-                            size={18}
-                            color='black'
-                            
-                            />
-                        }
-                        style = {styles.input} 
-                        value={username}
-                        onChangeText = {setUsername}
-                    />
-                     
-                     <Input
-                        placeholder={employee.role}
-                        leftIcon={
-                            <Icon
-                            name='user-o'
-                            size={18}
-                            color='black'
-                            onChangeText = {setRole}
-                            />
-                        }
-                        style = {styles.input} 
-                        value={role}
-                        onChangeText = {setRole}
-                    />
-                   
                      <Input
                         placeholder={employee.phone}
                         leftIcon={

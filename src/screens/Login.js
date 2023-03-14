@@ -3,22 +3,22 @@ import { View,Text,Image, StyleSheet ,TextInput,Button, StatusBar, TouchableOpac
 import React, {useState} from 'react';
 import axios from 'axios';
 import  {useForm, Controller} from 'react-hook-form';
-
+import ip_path from '../constants/Path'
 
 const EMAIL_REGEX = /^[a-zA-Z0-9. !#$%&*+/?^_{1}~]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/ 
 
 const Login = ({navigation}) => {
-
   var email = '';
   var password='';
-  
+     /*-------------HOOK---------------*/
   const {control, handleSubmit,getValues, formState: {errors}} = useForm();
     console.log(errors);
+     /*------------------------- liaison avec back SignIn ------------------------------------ */
    const onSignInPressed = (email, password) => {
         console.log(email, password);
         const configuration = {
-          method: "post",
-          url: "http://192.168.1.102:4000/SignIn",
+          method: "POST",
+          url: ip.ip_path+"/SignIn",
           data: {
           email,
           password
@@ -130,7 +130,7 @@ Login.navigationOptions = () => {
     headerShown: null,    
   };
 };
-
+/*------------styles----------*/
 const styles = StyleSheet.create({
   container : {
     flex: 1,

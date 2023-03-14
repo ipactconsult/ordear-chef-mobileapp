@@ -2,27 +2,51 @@ import React , {useState} from "react"
 import { TextInput, ScrollView, StyleSheet, Text, View,StatusBar,Image,TouchableOpacity } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome'
 import axios from 'axios';
+import ip_path from '../constants/Path'
 
 const ForgotPasswordScreen = ({navigation}) => {
   const [email, setEmail]= useState('');
-
+  const [isEmailValid, setIsEmailValid]= useState(true);
+  const [isEmpty, setIsEmpty] = useState(true);
+  const [showErrors, setShowErrors] = useState(false);
+  /*------------------------- Input Control ------------------------------------ */
+  const handleEmailChange = (value) => {
+    setEmail(value);
+    setIsEmpty(value.trim().length === 0);
+    setIsEmailValid(validateEmail(value));
+    setShowErrors(false);
+  };
+  const validateEmail = (email) => {
+    const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    return regex.test(email);
+  };
     /*------------------------- liaison avec back ------------------------------------ */
     const handleSubmit = (e) => {
         e.preventDefault();
-        const configuration = {
-        method: "put",
-        url: "http://192.168.1.102:4000/forgotPass",
-        data: {
-           email,
-        },
-        };
+        setShowErrors(!isEmailValid || isEmpty);
 
-        axios(configuration)
-        .then((result) => {console.log("Email sent");           
-          navigation.navigate('VerifPassCode')})
-        .catch((err) => {console.log("Email not sent !"); }) 
+        if (!isEmailValid) {
+          alert('Please enter a valid email address!');
+          //setShowErrors(false);
+        } 
+       else  if (isEmpty) {
+          //alert('Please fill in the input field!');
+        }
+       else{
+          const configuration = {
+            method: "PUT",
+            url:  ip.ip_path+"/forgotPass",
+            data: {
+               email,
+            },
+            };
+            axios(configuration)
+            .then((result) => {console.log("Email sent");           
+              navigation.navigate('VerifPassCode')})
+            .catch((err) => {console.log("Email not sent !"); }) 
+        }
+        
     }
-    
     return (
         
         <View style={{height:700, backgroundColor: '#FF1717' }}>
@@ -57,20 +81,20 @@ const ForgotPasswordScreen = ({navigation}) => {
                   placeholderTextColor="#818181"
                   name={email}
                   value={email}
-                  onChangeText = {setEmail}
+                  onChangeText = {handleEmailChange}
                 />
-          </View>                    
+                
+          </View> 
+                {showErrors && isEmpty && <Text style={{ color: 'red' }}>Email cannot be empty</Text>}
+                {!isEmailValid && <Text style={{ color: 'red' }}>Invalid email address</Text>}                   
         </View>
 
-                <TouchableOpacity style={styles.send} onPress={(e) => handleSubmit(e)}  >
+                <TouchableOpacity style={styles.send} onPress={(e) => handleSubmit(e)} >
                     <Text style={styles.sendTxt} >Send</Text>
                 </TouchableOpacity>
-                    
                <TouchableOpacity onPress={() => navigation.navigate('Login')}> 
                     <Text style= {{fontSize: 14, color: "#818181" , fontWeight: 'bold', alignSelf:'center'}}>signIn</Text>
                </TouchableOpacity>
-
-                 
               </View>
                      
             </ScrollView>
